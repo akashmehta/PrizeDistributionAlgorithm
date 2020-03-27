@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
             val newItemsMap = helper.calculatePrizeInfo(primaryData, 100, userProvidedEntries)
 
             itemList.clear()
+            itemList1.clear()
             val iterator = newItemsMap.iterator()
             val sampleList = ArrayList<PrizeInfoModel>()
             while (iterator.hasNext()) {
