@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
             val totalPrizeMoney = entryFee * userProvidedEntries * (1 - margin)
             itemList.forEach {
-                itemList1.add(PrizeInfoModel(it.key, it.value * totalPrizeMoney))
+                itemList1.add(PrizeInfoModel(it.key, Math.round(it.value * totalPrizeMoney).toDouble()))
             }
             rvContent1.layoutManager = LinearLayoutManager(this)
             rvContent1.adapter = PrizeInfoAdapter(itemList1)
