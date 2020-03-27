@@ -7,37 +7,41 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val primaryData = ArrayList<PrizeInfoModel>()
     private val itemList = ArrayList<PrizeInfoModel>()
     private val itemList1 = ArrayList<PrizeInfoModel>()
     private val entryFee: Int = 10
     private val margin: Double = 0.1
 
+    private var userProvidedEntries = 0
+
     init {
         repeat (3) {
-            itemList.add(PrizeInfoModel(it + 1, 0.1))
+            primaryData.add(PrizeInfoModel(it + 1, 0.1))
         }
         repeat(6) {
-            itemList.add(PrizeInfoModel(it + 4, 0.05))
+            primaryData.add(PrizeInfoModel(it + 4, 0.05))
         }
         repeat(5) {
-            itemList.add(PrizeInfoModel(it + 10, 0.03))
+            primaryData.add(PrizeInfoModel(it + 10, 0.03))
         }
         repeat(8) {
-            itemList.add(PrizeInfoModel(it + 15, 0.02))
+            primaryData.add(PrizeInfoModel(it + 15, 0.02))
         }
         repeat(9) {
-            itemList.add(PrizeInfoModel(it + 23, 0.01))
+            primaryData.add(PrizeInfoModel(it + 23, 0.01))
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        itemList.addAll(primaryData)
         rvContent.layoutManager = LinearLayoutManager(this)
         rvContent.adapter = PrizeInfoAdapter(itemList)
         button.setOnClickListener {
-
+            userProvidedEntries = tvNewSize.text.toString().toInt()
             val helper = PrizeInfoCalculationHelper()
-            val newItemsMap = helper.calculatePrizeInfo(itemList, 100, tvNewSize.text.toString().toInt())
+            val newItemsMap = helper.calculatePrizeInfo(primaryData, 100, userProvidedEntries)
 
             itemList.clear()
             val iterator = newItemsMap.iterator()
@@ -50,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             rvContent.adapter?.notifyDataSetChanged()
 
 
-            val totalPrizeMoney = entryFee * (itemList.size) * (1 - margin)
+            val totalPrizeMoney = entryFee * userProvidedEntries * (1 - margin)
             itemList.forEach {
                 itemList1.add(PrizeInfoModel(it.key, it.value * totalPrizeMoney))
             }
